@@ -3,6 +3,13 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './ModellingGallery.css';
 
+// Import images
+import imgIvoryStitch from '../assets/images/ModellingGallery.jsx/ivory_stitch.jpg.jpeg';
+import imgModel from '../assets/images/ModellingGallery.jsx/model.jpg.jpeg';
+import imgModelling1 from '../assets/images/ModellingGallery.jsx/modelling1.jpg.jpeg';
+import imgModelling2 from '../assets/images/ModellingGallery.jsx/modelling2.jpg.jpeg';
+import imgProfile from '../assets/images/ModellingGallery.jsx/profile.jpg.jpeg';
+
 gsap.registerPlugin(ScrollTrigger);
 
 const ModellingGallery = () => {
@@ -14,7 +21,6 @@ const ModellingGallery = () => {
     let pinWrapWidth = pinWrap.offsetWidth;
     let horizontalScrollLength = pinWrapWidth - window.innerWidth;
 
-    // Wait a tick for layout
     const timer = setTimeout(() => {
       gsap.to(pinWrap, {
         scrollTrigger: {
@@ -37,11 +43,11 @@ const ModellingGallery = () => {
   }, []);
 
   const photos = [
-    { title: "Avyaana", src: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&auto=format&fit=crop" },
-    { title: "Ivory Stitch", src: "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800&auto=format&fit=crop" },
-    { title: "Runway Experiences", src: "https://images.unsplash.com/photo-1509631179647-0c5000642f58?w=800&auto=format&fit=crop" },
-    { title: "Brand Photoshoots", src: "https://images.unsplash.com/photo-1529139574466-a303027c028b?w=800&auto=format&fit=crop" },
-    { title: "Campaigns", src: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&auto=format&fit=crop" }
+    { title: "Ivory Stitch", src: imgIvoryStitch },
+    { title: "Modelling Campaign", src: imgModel },
+    { title: "Runway Experiences", src: imgModelling1 },
+    { title: "Brand Photoshoots", src: imgModelling2 },
+    { title: "Creative Portraits", src: imgProfile }
   ];
 
   return (
