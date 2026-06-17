@@ -164,3 +164,58 @@ a, button, [role="button"] {
   margin: 0 auto;
   width: 100%;
 }
+
+/* Hard shadow and light shimmer animation for the word MULTIPLE */
+.special-multiple-text {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  position: relative;
+  display: inline-block;
+  
+  /* Hard shadow / drop-shadow effect */
+  filter: drop-shadow(3px 3px 0px var(--accent-purple));
+  
+  /* Gradient text with shine/light effect */
+  background: linear-gradient(
+    120deg,
+    var(--accent-gold) 0%,
+    var(--accent-gold) 35%,
+    #ffffff 50%,
+    var(--accent-gold) 65%,
+    var(--accent-gold) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  
+  /* Animations */
+  animation: 
+    shimmer-glow 4s linear infinite,
+    float-bounce 3s ease-in-out infinite alternate;
+}
+
+[data-theme="light"] .special-multiple-text {
+  filter: drop-shadow(3px 3px 0px rgba(49, 27, 146, 0.25));
+}
+
+@keyframes shimmer-glow {
+  0% {
+    background-position: 200% center;
+  }
+  100% {
+    background-position: -200% center;
+  }
+}
+
+@keyframes float-bounce {
+  0% {
+    transform: translateY(0);
+    filter: drop-shadow(2px 2px 0px var(--accent-purple));
+  }
+  100% {
+    transform: translateY(-4px);
+    filter: drop-shadow(5px 5px 0px var(--accent-purple)) drop-shadow(0px 0px 8px var(--accent-gold-glow));
+  }
+}

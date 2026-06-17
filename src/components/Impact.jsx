@@ -68,18 +68,17 @@ const countersData = [
 
 // Counting Upward Animation
 const AnimatedCounter = ({ targetValue, duration = 2000 }) => {
-  const [count, setCount] = useState(0);
+  const numTarget = parseInt(targetValue, 10);
+  const isNumeric = !isNaN(numTarget);
+  const [displayValue, setDisplayValue] = useState(
+    isNumeric ? '0' + targetValue.replace(/[0-9]/g, '') : targetValue
+  );
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
 
   useEffect(() => {
-    if (isInView) {
-      const numTarget = parseInt(targetValue, 10);
-      if (isNaN(numTarget)) {
-        setCount(targetValue);
-        return;
-      }
-      
+    if (isInView && isNumeric) {
+      const suffix = targetValue.replace(/[0-9]/g, '');
       const startTime = performance.now();
       
       const updateCount = (now) => {
@@ -89,20 +88,20 @@ const AnimatedCounter = ({ targetValue, duration = 2000 }) => {
         const easeVal = progress * (2 - progress); // easeOutQuad
         const current = Math.floor(easeVal * numTarget);
         
-        setCount(current);
+        setDisplayValue(`${current}${suffix}`);
         
         if (progress < 1) {
           requestAnimationFrame(updateCount);
         } else {
-          setCount(targetValue); 
+          setDisplayValue(targetValue); 
         }
       };
       
       requestAnimationFrame(updateCount);
     }
-  }, [isInView, targetValue, duration]);
+  }, [isInView, targetValue, duration, isNumeric, numTarget]);
 
-  return <span ref={ref}>{count}{typeof targetValue === 'number' ? '' : targetValue.replace(/[0-9]/g, '')}</span>;
+  return <span ref={ref}>{displayValue}</span>;
 };
 
 // Interactive Spotlight Card with Sparks
@@ -270,28 +269,37 @@ const Impact = () => {
           marginBottom: '5rem',
           flexWrap: 'wrap'
         }}>
-          {countersData.map((item, idx) => (
-            <div key={idx} style={{ textAlign: 'center' }}>
-              <h3 style={{ 
-                fontSize: 'clamp(2.5rem, 5vw, 4.2rem)', 
-                color: 'var(--accent-gold)', 
-                margin: 0, 
-                fontFamily: 'var(--font-display)',
-                fontWeight: 600
-              }}>
-                <AnimatedCounter targetValue={item.value} />
-              </h3>
-              <p style={{ 
-                color: 'var(--text-muted)', 
-                fontSize: 'clamp(0.95rem, 1.5vw, 1.15rem)', 
-                margin: '0.5rem 0 0 0', 
-                fontFamily: 'var(--font-serif)', 
-                fontStyle: 'italic' 
-              }}>
-                {item.label}
-              </p>
-            </div>
-          ))}
+          {countersData.map((item, idx) => {
+            const isMultiple = item.value === "Multiple";
+            return (
+              <div key={idx} style={{ textAlign: 'center' }}>
+                <h3 style={{ 
+                  fontSize: 'clamp(2.5rem, 5vw, 4.2rem)', 
+                  color: 'var(--accent-gold)', 
+                  margin: 0, 
+                  fontFamily: 'var(--font-display)',
+                  fontWeight: 600
+                }}>
+                  {isMultiple ? (
+                    <span className="special-multiple-text">
+                      <AnimatedCounter targetValue={item.value} />
+                    </span>
+                  ) : (
+                    <AnimatedCounter targetValue={item.value} />
+                  )}
+                </h3>
+                <p style={{ 
+                  color: 'var(--text-muted)', 
+                  fontSize: 'clamp(0.95rem, 1.5vw, 1.15rem)', 
+                  margin: '0.5rem 0 0 0', 
+                  fontFamily: 'var(--font-serif)', 
+                  fontStyle: 'italic' 
+                }}>
+                  {item.label}
+                </p>
+              </div>
+            );
+          })}
         </div>
 
         {/* Staggered Cards Grid */}
