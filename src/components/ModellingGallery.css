@@ -7,57 +7,86 @@
   background-color: var(--bg-secondary);
 }
 
-.horizontal-intro {
-  position: absolute;
-  top: 10%;
-  left: 5%;
-  z-index: 10;
-  max-width: 500px;
-}
-
-.horizontal-intro h2 {
-  font-size: clamp(2rem, 5vw, 4rem);
-  color: var(--accent-gold);
-  margin-bottom: 1rem;
-}
-
-.horizontal-intro p {
-  font-size: 1.2rem;
-  color: var(--text-muted);
-  font-family: var(--font-serif);
-}
-
 .pin-wrap {
   height: 100vh;
   display: flex;
   align-items: center;
-  padding: 0 5vw;
-  padding-top: 10vh; /* space for text */
+  padding: 0 8vw;
 }
 
-.gallery-item {
-  width: 40vw;
-  min-width: 300px;
-  height: 60vh;
-  margin-right: 5vw;
+/* Slide 1: Gallery Intro */
+.gallery-intro-slide {
+  width: 50vw;
+  min-width: 380px;
+  margin-right: 8vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-shrink: 0;
+  text-align: left;
+}
+
+.gallery-intro-slide h2 {
+  font-family: 'Syncopate', sans-serif;
+  font-weight: 700;
+  font-size: clamp(2rem, 4.5vw, 4rem);
+  color: var(--accent-gold);
+  line-height: 1.1;
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
   position: relative;
-  border-radius: 10px;
+  display: inline-block;
+}
+
+.gallery-intro-slide h2::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 0;
+  width: 100px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-gold) 0%, transparent 100%);
+}
+
+.gallery-intro-slide p {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(1.2rem, 2.2vw, 1.8rem);
+  line-height: 1.6;
+  color: var(--text-muted);
+  margin-top: 1rem;
+}
+
+/* Photo Cards */
+.gallery-item {
+  width: 32vw;
+  min-width: 300px;
+  height: 65vh;
+  margin-right: 6vw;
+  position: relative;
+  border-radius: 20px;
   overflow: hidden;
   flex-shrink: 0;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  background-color: #050508;
+  transform-origin: bottom center;
 }
 
 .gallery-item img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: grayscale(30%) contrast(120%);
-  transition: all 0.5s ease;
+  filter: grayscale(10%) contrast(110%) brightness(90%);
+  transform: scale(1.1); /* Zoomed in initially */
+  transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1), filter 0.8s ease;
 }
 
+/* Creative Hover Effects */
 .gallery-item:hover img {
-  filter: grayscale(0%) contrast(100%);
-  transform: scale(1.05);
+  filter: grayscale(0%) contrast(100%) brightness(100%);
+  transform: scale(1); /* Luxury zoom-out reveal */
 }
 
 .gallery-caption {
@@ -65,21 +94,63 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  padding: 2rem;
-  background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-  transform: translateY(20px);
-  opacity: 0;
-  transition: all 0.3s ease;
-}
-
-.gallery-item:hover .gallery-caption {
-  transform: translateY(0);
-  opacity: 1;
+  padding: 2.5rem 2rem;
+  background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 60%, transparent 100%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 
 .gallery-caption h3 {
-  color: #fff;
-  font-family: var(--font-serif);
-  font-size: 1.5rem;
-  letter-spacing: 2px;
+  color: var(--text-main);
+  font-family: 'Syncopate', sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+  letter-spacing: 1px;
+  margin: 0;
+  text-transform: uppercase;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.gallery-item:hover .gallery-caption h3 {
+  color: var(--accent-gold);
+  transform: translateX(5px);
+}
+
+/* Subtle border lines on hover */
+.gallery-item::before {
+  content: '';
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  right: 15px;
+  bottom: 15px;
+  border: 1px solid rgba(212, 175, 55, 0);
+  border-radius: 12px;
+  z-index: 3;
+  pointer-events: none;
+  transition: border-color 0.5s ease;
+}
+
+.gallery-item:hover::before {
+  border-color: rgba(212, 175, 55, 0.3);
+}
+
+/* Responsive adjustment */
+@media (max-width: 768px) {
+  .pin-wrap {
+    padding-top: 5vh;
+  }
+  
+  .gallery-intro-slide {
+    width: 80vw;
+    margin-right: 10vw;
+  }
+  
+  .gallery-item {
+    width: 70vw;
+    height: 55vh;
+    margin-right: 8vw;
+  }
 }

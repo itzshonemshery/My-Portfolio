@@ -1,94 +1,179 @@
-import { motion } from 'framer-motion';
+import { useRef } from 'react';
+import { motion, useScroll, useTransform, useMotionValue } from 'framer-motion';
 import imgProfile from '../assets/images/ModellingGallery.jsx/profile.jpg.jpeg';
+import './Introduction.css';
 
 const Introduction = () => {
+  const containerRef = useRef(null);
+
+  // Scroll tracking for parallax and vertical journey line
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  });
+
+  // Calculate parallax offsets
+  const yParallax = useTransform(scrollYProgress, [0, 1], [-50, 50]);
+  
+  // Calculate journey line height
+  const journeyHeight = useTransform(scrollYProgress, [0.1, 0.7], ["0%", "100%"]);
+
+  // Motion values for 3D card tilt
+  const rotateX = useMotionValue(0);
+  const rotateY = useMotionValue(0);
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    
+    // Relative mouse position from card center
+    const mouseX = e.clientX - rect.left - width / 2;
+    const mouseY = e.clientY - rect.top - height / 2;
+    
+    // Rotate max 10 degrees
+    const rX = -(mouseY / (height / 2)) * 10;
+    const rY = (mouseX / (width / 2)) * 10;
+    
+    rotateX.set(rX);
+    rotateY.set(rY);
+  };
+
+  const handleMouseLeave = () => {
+    rotateX.set(0);
+    rotateY.set(0);
+  };
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2,
+        staggerChildren: 0.15,
       },
     },
   };
 
-  const childVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.8,
-        ease: "easeOut",
-      },
-    },
+  const slideLeftVariants = {
+    hidden: { opacity: 0, x: -70 },
+    visible: { 
+      opacity: 1, 
+      x: 0, 
+      transition: { duration: 0.8, ease: [0.25, 1, 0.5, 1] } 
+    }
+  };
+
+  const slideRightVariants = {
+    hidden: { opacity: 0, x: 70 },
+    visible: { 
+      opacity: 1, 
+      x: 0, 
+      transition: { duration: 0.8, ease: [0.25, 1, 0.5, 1] } 
+    }
   };
 
   return (
-    <section className="section-container flex-center">
-      <div className="container" style={{ maxWidth: '1200px' }}>
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-            gap: '4rem',
-            alignItems: 'center'
+    <section ref={containerRef} className="intro-section">
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        className="intro-grid"
+      >
+        {/* Left Side: Photo Container with 3D Tilt & Parallax Image */}
+        <motion.div 
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+          style={{ 
+            rotateX, 
+            rotateY, 
+            transformStyle: "preserve-3d", 
+            perspective: 1000 
           }}
+          className="intro-image-container"
         >
-          <motion.div variants={childVariants} style={{ position: 'relative' }}>
-            <div style={{
-              width: '100%',
-              aspectRatio: '3/4',
-              borderRadius: '20px',
-              overflow: 'hidden',
-              boxShadow: '0 20px 40px rgba(0,0,0,0.5)'
-            }}>
-              <img 
-                src={imgProfile} 
-                alt="Shone Mariam Shery Profile" 
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  filter: 'contrast(110%) brightness(95%)'
-                }}
-              />
-            </div>
-            <div style={{
-              position: 'absolute',
-              top: '-20px',
-              left: '-20px',
-              width: '100%',
-              height: '100%',
-              border: '2px solid var(--accent-gold)',
-              borderRadius: '20px',
-              zIndex: -1
-            }}></div>
-          </motion.div>
+          <div className="intro-image-overlay" style={{ transform: "translateZ(20px)" }}></div>
+          <motion.img 
+            src={imgProfile} 
+            alt="Shone Mariyam Shery Profile" 
+            className="intro-image"
+            style={{ 
+              y: yParallax, 
+              scale: 1.15,
+              transformOrigin: "center center"
+            }}
+          />
+        </motion.div>
 
-          <div style={{ textAlign: 'left' }}>
-            <motion.h2 variants={childVariants} style={{ fontSize: 'clamp(2rem, 5vw, 4rem)', marginBottom: '2rem', color: 'var(--accent-gold)' }}>
-              More Than Just A Student
-            </motion.h2>
+        {/* Right Side: Content Column woven with Journey Line */}
+        <div style={{ display: 'flex', alignItems: 'stretch' }} className="intro-content-wrapper">
+          {/* Vertical Journey Line beside text */}
+          <div className="journey-line-track">
+            <motion.div 
+              className="journey-line-fill"
+              style={{ height: journeyHeight }}
+            />
+          </div>
+
+          {/* Text panel */}
+          <div className="intro-content-container" style={{ padding: '4% 0 4% 3rem' }}>
+            <h2 className="intro-title">
+              NOT YOUR TYPICAL FIRST YEAR.
+            </h2>
             
-            <motion.p variants={childVariants} style={{ fontSize: 'clamp(1.2rem, 2vw, 1.8rem)', lineHeight: '1.6', marginBottom: '2rem', color: 'var(--text-muted)', fontFamily: 'var(--font-serif)' }}>
-              I am a first-year B.Tech student specializing in Artificial Intelligence and Machine Learning at Chandigarh University.
-            </motion.p>
+            {/* Alternating Slide Reveals */}
+            <div className="intro-highlight-block">
+              <motion.p 
+                variants={slideLeftVariants}
+                className="intro-highlight"
+              >
+                AI & ML Student.
+              </motion.p>
+              <motion.p 
+                variants={slideRightVariants}
+                className="intro-highlight"
+              >
+                Builder of intelligent systems.
+              </motion.p>
+              <motion.p 
+                variants={slideLeftVariants}
+                className="intro-highlight"
+              >
+                Winner. Speaker. Creator.
+              </motion.p>
+            </div>
             
-            <motion.p variants={childVariants} style={{ fontSize: 'clamp(1.1rem, 1.5vw, 1.4rem)', lineHeight: '1.8', marginBottom: '2rem' }}>
-              I build intelligent systems, create digital experiences, compete on national platforms, work with brands, and constantly challenge myself to grow beyond the classroom.
-            </motion.p>
+            <p className="intro-desc">
+              Working on projects like{' '}
+              <motion.span 
+                whileHover={{ scale: 1.03 }}
+                className="interactive-keyword"
+              >
+                PitchPerfect
+              </motion.span>{' '}
+              and{' '}
+              <motion.span 
+                whileHover={{ scale: 1.03 }}
+                className="interactive-keyword"
+              >
+                Fruit Ninja 2.0
+              </motion.span>, while collaborating with brands and pursuing opportunities beyond the classroom.
+            </p>
             
-            <motion.p variants={childVariants} style={{ fontSize: 'clamp(1.2rem, 2vw, 1.8rem)', lineHeight: '1.6', fontWeight: 'bold', color: 'var(--text-main)' }}>
-              I believe technology should solve real problems while creativity makes people remember them.
+            {/* Signature wipe reveal mask */}
+            <motion.p 
+              initial={{ clipPath: "polygon(0 0, 0 0, 0 100%, 0% 100%)" }}
+              whileInView={{ clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)" }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 1.2, ease: "easeInOut" }}
+              className="intro-footer"
+            >
+              Learning fast. Building faster.
             </motion.p>
           </div>
-        </motion.div>
-      </div>
+        </div>
+      </motion.div>
     </section>
   );
 };

@@ -12,6 +12,7 @@ import SkillsConstellation from './components/SkillsConstellation';
 import Experience from './components/Experience';
 import Philosophy from './components/Philosophy';
 import Contact from './components/Contact';
+import JourneyThread from './components/JourneyThread';
 
 function App() {
   useEffect(() => {
@@ -45,7 +46,8 @@ function App() {
       <CustomCursor />
       <ThemeToggle />
       
-      <main>
+      <main style={{ position: 'relative' }}>
+        <JourneyThread />
         <Hero />
         <Introduction />
         <Impact />

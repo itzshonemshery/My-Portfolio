@@ -16,7 +16,7 @@ For best performance and layout, consider the following image names or update th
 import portrait1 from '../assets/images/portrait-1.jpg';
 
 // Inside JSX:
-<img src={portrait1} alt="Shone Mariam Shery" />
+<img src={portrait1} alt="Shone Mariyam Shery" />
 ```
 
 Currently, the code uses premium placeholders from Unsplash or simple colored blocks to demonstrate the layout.

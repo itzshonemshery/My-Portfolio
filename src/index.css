@@ -11,10 +11,16 @@
   --accent-purple: #4a148c;
   --accent-purple-glow: rgba(74, 20, 140, 0.3);
 
+  /* Luxury Fonts */
+  --font-lux-serif: 'Bodoni Moda', serif;
+  --font-lux-editorial: 'Italiana', serif;
+  --font-lux-roman: 'Cinzel', serif;
+  --font-lux-sans: 'Montserrat', sans-serif;
+
   /* Fonts */
   --font-sans: 'Inter', sans-serif;
-  --font-display: 'Syncopate', sans-serif;
-  --font-serif: 'Playfair Display', serif;
+  --font-display: var(--font-lux-roman);
+  --font-serif: var(--font-lux-editorial);
 
   --nav-bg: rgba(5, 5, 8, 0.7);
   --card-bg: rgba(20, 20, 30, 0.5);
@@ -63,9 +69,9 @@ body::-webkit-scrollbar {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
-  font-weight: 700;
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 0.08em;
 }
 
 a {
