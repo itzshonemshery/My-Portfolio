@@ -41,7 +41,7 @@ const Experience = () => {
   ];
 
   return (
-    <section className="section-container" style={{ position: 'relative', overflow: 'hidden' }}>
+    <section id="experience" className="section-container" style={{ position: 'relative', overflow: 'hidden' }}>
       <div className="container" style={{ maxWidth: '850px', position: 'relative', zIndex: 2 }}>
         
         {/* Creative Title Entrance */}

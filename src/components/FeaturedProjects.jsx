@@ -83,7 +83,7 @@ const FeaturedProjects = () => {
   ];
 
   return (
-    <section className="section-container">
+    <section id="projects" className="section-container">
       <div className="container">
         <motion.h2 
           initial={{ opacity: 0, y: 30 }}

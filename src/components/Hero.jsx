@@ -168,8 +168,76 @@ const InteractiveDot = () => {
   return <canvas ref={canvasRef} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 3 }} />;
 };
 
+// Staggered Character Reveal for Name
+const AnimatedName = ({ text, delayOffset = 0, isGold = false }) => {
+  const letters = Array.from(text);
+  
+  const container = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.05,
+        delayChildren: delayOffset,
+      },
+    },
+  };
+
+  const child = {
+    visible: {
+      opacity: 1,
+      y: 0,
+      rotateX: 0,
+      transition: {
+        type: "spring",
+        damping: 10,
+        stiffness: 100,
+      },
+    },
+    hidden: {
+      opacity: 0,
+      y: "80%",
+      rotateX: -60,
+    },
+  };
+
+  return (
+    <motion.span
+      style={{ 
+        display: 'inline-flex', 
+        perspective: '1000px', 
+        transformStyle: 'preserve-3d' 
+      }}
+      variants={container}
+      initial="hidden"
+      animate="visible"
+    >
+      {letters.map((letter, index) => (
+        <motion.span
+          key={index}
+          variants={child}
+          style={{ 
+            display: 'inline-block',
+            transformOrigin: 'bottom center',
+            cursor: 'default'
+          }}
+          whileHover={{
+            scale: 1.15,
+            y: -8,
+            color: isGold ? '#ffffff' : 'var(--accent-gold)',
+            filter: 'drop-shadow(0px 0px 10px var(--accent-gold-glow))',
+            transition: { type: "spring", stiffness: 300, damping: 10 }
+          }}
+        >
+          {letter}
+        </motion.span>
+      ))}
+    </motion.span>
+  );
+};
+
 // Spring-based Magnetic Button
-const MagneticButton = ({ children, className }) => {
+const MagneticButton = ({ children, className, ...props }) => {
   const ref = useRef(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
@@ -205,8 +273,9 @@ const MagneticButton = ({ children, className }) => {
       animate={{ x: position.x, y: position.y }}
       transition={{ type: "spring", stiffness: 120, damping: 14 }}
       style={{ position: 'relative' }}
+      {...props}
     >
-      {children}
+      <span style={{ position: 'relative', zIndex: 2 }}>{children}</span>
     </motion.button>
   );
 };
@@ -223,6 +292,13 @@ const backgroundFloatingTexts = [
 const Hero = () => {
   const [init, setInit] = useState(false);
   const [currentRole, setCurrentRole] = useState(0);
+
+  const scrollToSection = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   useEffect(() => {
     initParticlesEngine(async (engine) => {
@@ -364,34 +440,13 @@ const Hero = () => {
         >
           <h1 className="main-title">
             <span className="text-line" style={{ overflow: 'hidden' }}>
-              <motion.span
-                initial={{ y: "100%", opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 1.2, ease: [0.25, 1, 0.5, 1] }}
-                style={{ display: 'block' }}
-              >
-                SHONE
-              </motion.span>
+              <AnimatedName text="SHONE" delayOffset={0.1} />
             </span>
             <span className="text-line" style={{ overflow: 'hidden' }}>
-              <motion.span
-                initial={{ y: "100%", opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 1.2, ease: [0.25, 1, 0.5, 1], delay: 0.15 }}
-                style={{ display: 'block' }}
-              >
-                MARIYAM
-              </motion.span>
+              <AnimatedName text="MARIYAM" delayOffset={0.3} />
             </span>
             <span className="text-line text-gradient-gold" style={{ overflow: 'hidden' }}>
-              <motion.span
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ type: "spring", stiffness: 80, damping: 14, delay: 0.35 }}
-                style={{ display: 'block' }}
-              >
-                SHERY
-              </motion.span>
+              <AnimatedName text="SHERY" delayOffset={0.5} isGold={true} />
             </span>
           </h1>
         </motion.div>
@@ -418,9 +473,24 @@ const Hero = () => {
           animate={{ opacity: 1 }}
           transition={{ delay: 1, duration: 1 }}
         >
-          <MagneticButton className="btn-primary">Explore My Journey</MagneticButton>
-          <MagneticButton className="btn-secondary">View Projects</MagneticButton>
-          <MagneticButton className="btn-outline">Download Resume</MagneticButton>
+          <MagneticButton 
+            className="btn-primary" 
+            onClick={() => scrollToSection('introduction')}
+          >
+            Explore My Journey
+          </MagneticButton>
+          <MagneticButton 
+            className="btn-secondary" 
+            onClick={() => scrollToSection('projects')}
+          >
+            View Projects
+          </MagneticButton>
+          <MagneticButton 
+            className="btn-outline" 
+            onClick={() => scrollToSection('experience')}
+          >
+            Download Resume
+          </MagneticButton>
         </motion.div>
       </div>
     </section>

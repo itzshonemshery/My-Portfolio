@@ -73,7 +73,7 @@ const Introduction = () => {
   };
 
   return (
-    <section ref={containerRef} className="intro-section">
+    <section id="introduction" ref={containerRef} className="intro-section">
       <motion.div
         variants={containerVariants}
         initial="hidden"
