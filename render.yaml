@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: shone-portfolio
+    env: static
+    buildCommand: npm run build
+    publishDir: dist
