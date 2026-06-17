@@ -27,10 +27,10 @@ const Contact = () => {
             <p>I'm always open to discussing new projects, creative ideas or opportunities to be part of your visions.</p>
             
             <div className="social-links">
-              <a href="#" className="magnetic icon-btn"><Linkedin size={24} /></a>
-              <a href="#" className="magnetic icon-btn"><Github size={24} /></a>
-              <a href="#" className="magnetic icon-btn"><Instagram size={24} /></a>
-              <a href="#" className="magnetic icon-btn"><Mail size={24} /></a>
+              <a href="https://www.linkedin.com/in/shone-mariyam-shery-5ba641363/" target="_blank" rel="noopener noreferrer" className="magnetic icon-btn"><Linkedin size={24} /></a>
+              <a href="https://github.com/itzshonemshery" target="_blank" rel="noopener noreferrer" className="magnetic icon-btn"><Github size={24} /></a>
+              <a href="https://www.instagram.com/_shonemary_/" target="_blank" rel="noopener noreferrer" className="magnetic icon-btn"><Instagram size={24} /></a>
+              <a href="mailto:shonemshery@gmail.com" className="magnetic icon-btn"><Mail size={24} /></a>
             </div>
           </motion.div>
 

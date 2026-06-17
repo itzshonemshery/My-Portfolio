@@ -216,16 +216,10 @@ const AnimatedName = ({ text, delayOffset = 0, isGold = false }) => {
         <motion.span
           key={index}
           variants={child}
-          style={{ 
-            display: 'inline-block',
-            transformOrigin: 'bottom center',
-            cursor: 'default'
-          }}
+          className={isGold ? "animated-letter-gold" : "animated-letter"}
           whileHover={{
             scale: 1.15,
             y: -8,
-            color: isGold ? '#ffffff' : 'var(--accent-gold)',
-            filter: 'drop-shadow(0px 0px 10px var(--accent-gold-glow))',
             transition: { type: "spring", stiffness: 300, damping: 10 }
           }}
         >
@@ -445,7 +439,7 @@ const Hero = () => {
             <span className="text-line" style={{ overflow: 'hidden' }}>
               <AnimatedName text="MARIYAM" delayOffset={0.3} />
             </span>
-            <span className="text-line text-gradient-gold" style={{ overflow: 'hidden' }}>
+            <span className="text-line" style={{ overflow: 'hidden' }}>
               <AnimatedName text="SHERY" delayOffset={0.5} isGold={true} />
             </span>
           </h1>
@@ -487,7 +481,7 @@ const Hero = () => {
           </MagneticButton>
           <MagneticButton 
             className="btn-outline" 
-            onClick={() => scrollToSection('experience')}
+            onClick={() => window.open('/resume.pdf', '_blank')}
           >
             Download Resume
           </MagneticButton>
